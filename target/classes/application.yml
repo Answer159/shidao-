@@ -1,0 +1,27 @@
+prop:
+  upload-folder: "D://sd/"
+spring:
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=TEACH
+    username: ssm
+    password: wzh8013765
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 5000MB
+      max-file-size: 500MB
+
+#mybatis:
+#  # 指定 mapper.xml 的位置
+#  mapper-locations: classpath:/*.xml
+#  #扫描实体类的位置,在此处指明扫描实体类的包，在 mapper.xml 中就可以不写实体类的全路径名
+#  configuration:
+#    #默认开启驼峰命名法，可以不用设置该属性
+#    map-underscore-to-camel-case: true
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          autoconfigure: ERROR         # 日志不打印条件评估报告

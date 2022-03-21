@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wmyskxz.mapper.CommentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.wmyskxz.entity.Comment">
+        <id column="id" property="id" />
+        <result column="content" property="content" />
+        <result column="use_id" property="useId" />
+        <result column="question_id" property="questionId" />
+        <result column="create_date" property="createDate" />
+        <result column="like_" property="like" />
+        <result column="replay_num" property="replayNum" />
+        <result column="replay_id" property="replayId" />
+    </resultMap>
+
+</mapper>
