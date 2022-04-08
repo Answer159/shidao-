@@ -661,6 +661,14 @@ public class ForeController {
             if(count>=10){
                 break;
             }
+            if(userInfo1.getSex()==1){
+                userInfo1.setGender("男");
+            }
+            else{
+                userInfo1.setGender("女");
+            }
+            int domainId = userInfo1.getDomainId();
+            userInfo1.setDomainText(categoryService.getById(domainId).getDomain());
             userInfo1.setUserImg("/img/userImage/"+userInfo1.getId()+"/"+userInfo1.getGraphId());
             userInfos1.add(userInfo1);
             count++;
@@ -2034,6 +2042,12 @@ public class ForeController {
         Category category=categoryService.getById(classInfo.getDomainId());
         UserInfo user=userInfoService.getById(classInfo.getUserId());
         classInfo.setCateText(category.getDomain());
+        if(user.getSex()==1){
+            user.setGender("男");
+        }
+        else{
+            user.setGender("女");
+        }
         user.setUserImg("/img/userImage/"+user.getId()+"/"+user.getGraphId());
         user.setDomainText(category.getDomain());
         List<String> imgPath=new ArrayList<>();
@@ -2120,6 +2134,12 @@ public class ForeController {
         UserInfo userInfo=userInfoService.getById(question.getUseId());
         question.setCateText(category.getDomain());
         userInfo.setUserImg("/img/userImage/"+userInfo.getId()+"/"+userInfo.getGraphId());
+        if(userInfo.getSex()==1){
+            userInfo.setGender("男");
+        }
+        else{
+            userInfo.setGender("女");
+        }
         userInfo.setDomainText(category.getDomain());
         List<CommentVo> commentVos = new ArrayList<>();
         int replay_id;
