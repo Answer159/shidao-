@@ -2,10 +2,7 @@ package cn.wmyskxz.controller;
 
 
 import cn.wmyskxz.entity.*;
-import cn.wmyskxz.service.ClassImageInfoService;
-import cn.wmyskxz.service.ClassInfoService;
-import cn.wmyskxz.service.ClassVideoInfoService;
-import cn.wmyskxz.service.UserInfoService;
+import cn.wmyskxz.service.*;
 import cn.wmyskxz.vo.ClassVo;
 import cn.wmyskxz.vo.EvaluationVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -40,6 +37,8 @@ public class ClassInfoController {
     private ClassImageInfoService classImageInfoService;
     @Resource
     private ClassVideoInfoService classVideoInfoService;
+    @Resource
+    private OrderService orderService;
     @RequestMapping("/hisClassInfo")
     @ResponseBody
     @ApiOperation(value = "我的所有课程")
@@ -151,6 +150,46 @@ public class ClassInfoController {
         }
 
         Map map=new HashMap();
+        map.put("classVos",classVos);
+        map.put("msg","success");
+        return map;
+    }
+    @RequestMapping("/myStudy")
+    @ResponseBody
+    public Map myStudy(HttpSession session,HttpServletRequest request) {
+        UserInfo userInfo=(UserInfo)session.getAttribute("userInfo");
+        Map map = new HashMap();
+        List<OrderS> orderS = new ArrayList<>();
+        orderS = orderService.list(new QueryWrapper<OrderS>().eq("buyer_id",userInfo.getId()).eq("order_status","2"));
+        List<ClassInfo> classInfos = new ArrayList<>();
+        for(OrderS i:orderS){
+            ClassInfo c = classInfoService.getById(i.getClassId());
+            classInfos.add(c);
+        }
+        List<ClassVo> classVos=new ArrayList<>();
+        for(ClassInfo classInfo:classInfos){
+            UserInfo user = userInfoService.getById(classInfo.getUserId());
+            String imgPath;
+            ClassVo classVo=new ClassVo();
+            classVo.setId(classInfo.getId());
+            classVo.setTitle(classInfo.getTitle());
+            classVo.setMoney(classInfo.getPrice());
+            int i=0;
+            float k=i;
+            classVo.setScore(k);
+            classVo.setUsername(user.getUsername());
+            List<ClassImageInfo> classImageInfos=classImageInfoService.
+                    list(new QueryWrapper<ClassImageInfo>().eq("class_info_id",classInfo.getId()));
+            if(classImageInfos.size()!=0){
+                imgPath = "/img/image/classImage/"+classInfo.getId()+"/"+classImageInfos.get(0).getId()+"."+classImageInfos.get(0).getSuffix();
+            }
+            else{
+                imgPath = "/img/image/classImage/0.jpg";
+            }
+            classVo.setImg(imgPath);
+            classVos.add(classVo);
+        }
+
         map.put("classVos",classVos);
         map.put("msg","success");
         return map;

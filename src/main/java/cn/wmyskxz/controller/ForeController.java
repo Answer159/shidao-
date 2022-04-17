@@ -518,7 +518,7 @@ public class ForeController {
     @RequestMapping("/finish")
     @ResponseBody
     @ApiOperation(value = "完成订单，这一步由购买者来做")
-    public Map finish(@RequestParam("order_id") Integer order_id){
+    public Map finish(@RequestParam("orderId") Integer order_id){
         OrderS order_=orderService.getById(order_id);
 
         order_.setOrderStatus("2");
@@ -540,7 +540,7 @@ public class ForeController {
     @RequestMapping("/finish_q")
     @ResponseBody
     @ApiOperation(value = "完成提问订单，这一步由购买者来做")
-    public Map finish_q(@RequestParam("order_q_id") Integer order_q_id){
+    public Map finish_q(@RequestParam("orderQId") Integer order_q_id){
         OrderQ order_q=order_qService.getById(order_q_id);
 
         order_q.setOrderStatus("2");
