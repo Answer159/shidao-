@@ -2042,6 +2042,11 @@ public class ForeController {
         Category category=categoryService.getById(classInfo.getDomainId());
         UserInfo user=userInfoService.getById(classInfo.getUserId());
         classInfo.setCateText(category.getDomain());
+        String videoPath="";
+        ClassVideoInfo classVideoInfo = classVideoInfoService.getOne(new QueryWrapper<ClassVideoInfo>().eq("class_info_id",classInfo_id));
+        if(classVideoInfo!=null){
+            videoPath += "img/classVideo/"+classVideoInfo.getId()+".mp4";
+        }
         if(user.getSex()==1){
             user.setGender("男");
         }
@@ -2059,6 +2064,7 @@ public class ForeController {
             map.put("category",category);
             map.put("userInfo",user);
             map.put("imgPath",imgPath);
+            map.put("videoPath",videoPath);
             return map;
         }
         for(ClassImageInfo classImageInfo:classImageInfos){
@@ -2071,6 +2077,7 @@ public class ForeController {
         map.put("category",category);
         map.put("userInfo",user);
         map.put("imgPath",imgPath);
+        map.put("videoPath",videoPath);
 
         return map;
     }
@@ -2159,6 +2166,11 @@ public class ForeController {
             commentVo.setComment(comment);
             commentVos.add(commentVo);
         }
+        String videoPath="";
+        QuestionVideoInfo questionVideoInfo = questionVideoInfoService.getOne(new QueryWrapper<QuestionVideoInfo>().eq("question_id",QuestionId));
+        if(questionVideoInfo!=null){
+            videoPath += "img/questionVideo/"+questionVideoInfo.getId()+".mp4";
+        }
         List<QuestionImageInfo> questionImageInfos=questionImageInfoService.
                 list(new QueryWrapper<QuestionImageInfo>().eq("question_id",QuestionId));
         String filePath;
@@ -2176,6 +2188,7 @@ public class ForeController {
             map.put("commentVos",commentVos);
             map.put("userInfo",userInfo);
             map.put("imgPath",imgPath);
+            map.put("videoPath",videoPath);
         }
         for(QuestionImageInfo questionImageInfo:questionImageInfos){
             imgPath.add(filePath+questionImageInfo.getId() + "." + questionImageInfo.getSuffix());
@@ -2186,6 +2199,7 @@ public class ForeController {
         map.put("commentVos",commentVos);
         map.put("userInfo",userInfo);
         map.put("imgPath",imgPath);
+        map.put("videoPath",videoPath);
         return map;
 
     }
