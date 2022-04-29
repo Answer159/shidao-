@@ -2610,9 +2610,15 @@ public class ForeController {
     @ResponseBody
     @ApiOperation(value = "对课程有意向")
     public Map want(@RequestParam("classInfo_id") Integer classInfo_id,HttpSession session){
+        Map map=new HashMap();
         ClassInfo classInfo=classInfoService.getById(classInfo_id);
         UserInfo userInfo=(UserInfo)session.getAttribute("userInfo");
-
+        List<OrderS> orderS = orderService.list(new QueryWrapper<OrderS>().eq("buyer_id",userInfo.getId())
+                .eq("class_id",classInfo_id));
+        if(orderS.size()!=0){
+            map.put("msg","fail");
+            return map;
+        }
         OrderS order_=new OrderS();
         order_.setOrderStatus("0");
         order_.setBuyerId(userInfo.getId());
@@ -2626,7 +2632,7 @@ public class ForeController {
         order_.setSellerStatus(0);
         orderService.save(order_);
 
-        Map map=new HashMap();
+
         map.put("order_",order_);
         map.put("buyer",userInfo);
         map.put("seller",userInfoService.getById(order_.getSellerId()));
@@ -2639,9 +2645,15 @@ public class ForeController {
     @ResponseBody
     @ApiOperation(value = "对提问有意向")
     public Map wantQ(@RequestParam("question_id") Integer question_id,HttpSession session){
+        Map map=new HashMap();
         Question question=questionService.getById(question_id);
         UserInfo userInfo=(UserInfo)session.getAttribute("userInfo");
-
+        List<OrderQ> orderQ = order_qService.list(new QueryWrapper<OrderQ>().eq("buyer_id",userInfo.getId())
+                .eq("question_id",question_id));
+        if(orderQ.size()!=0){
+            map.put("msg","fail");
+            return map;
+        }
         OrderQ order_q=new OrderQ();
         order_q.setOrderStatus("0");
         order_q.setBuyerId(userInfo.getId());
@@ -2656,7 +2668,7 @@ public class ForeController {
 
         order_qService.save(order_q);
 
-        Map map=new HashMap();
+
         map.put("order_q",order_q);
         map.put("buyer",userInfo);
         map.put("seller",userInfoService.getById(order_q.getSellerId()));
